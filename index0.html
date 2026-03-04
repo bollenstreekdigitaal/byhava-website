@@ -25,6 +25,29 @@
 
   <link rel="stylesheet" href="style.css">
 
+  <!-- Video hero overrides -->
+  <style>
+    .hero--video { position: relative; overflow: hidden; }
+    .hero--video .hero__bg { display: none; }
+    .hero__video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+    }
+    .hero__video-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.55);
+      z-index: 1;
+    }
+  </style>
+
   <!-- Structured Data -->
   <script type="application/ld+json">
   {
@@ -69,9 +92,12 @@
     </ul>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero" id="hero">
-    <div class="hero__bg"></div>
+  <!-- Hero with Video Background -->
+  <section class="hero hero--video" id="hero">
+    <video class="hero__video" autoplay muted loop playsinline>
+      <source src="images/hero-bg.mp4" type="video/mp4">
+    </video>
+    <div class="hero__video-overlay"></div>
     <div class="hero__content">
       <h1 class="hero__title"><img src="images/hero-logo.png" alt="HAVA" class="hero__logo-img"></h1>
       <p class="hero__subtitle">Concert &amp; Event Photographer</p>
