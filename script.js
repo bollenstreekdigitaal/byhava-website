@@ -5,6 +5,21 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ── Theme Toggle ──
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      if (next === 'dark') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', next);
+      }
+      localStorage.setItem('byhava-theme', next);
+    });
+  }
+
   // ── Mobile Navigation ──
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
@@ -109,10 +124,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await res.json();
 
         if (res.ok) {
+          const lang = document.documentElement.lang === 'nl' ? 'nl' : 'en';
+          const msg = {
+            en: { title: 'Thank you!', body: "Your inquiry has been sent. I'll get back to you within 24 hours." },
+            nl: { title: 'Dank je!', body: 'Je aanvraag is verstuurd. Ik neem binnen 24 uur contact met je op.' }
+          };
           contactForm.innerHTML = `
             <div style="text-align:center;padding:48px 24px;">
-              <h3 style="color:var(--color-accent);font-size:1.5rem;margin-bottom:12px;">Thank you!</h3>
-              <p style="color:var(--color-text-muted);">Your inquiry has been sent. I'll get back to you within 24 hours.</p>
+              <h3 style="color:var(--color-accent);font-size:1.5rem;margin-bottom:12px;">${msg[lang].title}</h3>
+              <p style="color:var(--color-text-muted);">${msg[lang].body}</p>
             </div>`;
         } else {
           btn.textContent = 'Error — try again';
@@ -127,12 +147,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Smooth scroll for anchor links ──
+  // ── Smooth scroll for anchor links + project pre-selection ──
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', (e) => {
       const target = document.querySelector(anchor.getAttribute('href'));
       if (target) {
         e.preventDefault();
+
+        // Pre-select project type if data-project is set
+        const projectType = anchor.dataset.project;
+        if (projectType) {
+          const select = document.getElementById('project');
+          if (select) select.value = projectType;
+        }
+
         const offset = 80; // nav height
         const top = target.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: 'smooth' });
