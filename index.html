@@ -57,11 +57,29 @@
     .hero__video-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(10, 10, 10, 0.55);
+      background: rgba(10, 10, 10, 0.6);
       z-index: 1;
     }
     [data-theme="light"] .hero__video-overlay {
-      background: rgba(245, 245, 240, 0.55);
+      background: rgba(245, 245, 240, 0.6);
+    }
+    .hero--video .hero__subtitle,
+    .hero--video .hero__tagline {
+      color: #fff;
+      font-weight: 400;
+    }
+    .hero--video .hero__tagline {
+      opacity: 0.85;
+    }
+    .hero--video .hero__content {
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    [data-theme="light"] .hero--video .hero__subtitle,
+    [data-theme="light"] .hero--video .hero__tagline {
+      color: #1a1a1a;
+    }
+    [data-theme="light"] .hero--video .hero__content {
+      text-shadow: 0 2px 8px rgba(255,255,255,0.5);
     }
   </style>
 
