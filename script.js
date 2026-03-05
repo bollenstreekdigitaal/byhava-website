@@ -168,6 +168,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ── Image right-click protection ──
+  document.addEventListener('contextmenu', (e) => {
+    if (e.target.closest('.gallery-grid__item, .gallery-hero, .portfolio-topic, .lightbox')) {
+      e.preventDefault();
+    }
+  });
+
   // ── Lightbox / Slideshow ──
   (() => {
     // Create lightbox DOM
@@ -191,12 +198,15 @@ document.addEventListener('DOMContentLoaded', () => {
       // Support both homepage portfolio items and gallery sub-page items
       const portfolioItems = Array.from(document.querySelectorAll('.portfolio__item'))
         .filter(item => item.style.display !== 'none')
-        .map(item => item.querySelector('img').src);
+        .map(item => {
+          const imgEl = item.querySelector('img');
+          return imgEl.dataset.large || imgEl.src;
+        });
       if (portfolioItems.length > 0) return portfolioItems;
 
-      // Gallery sub-page items
+      // Gallery sub-page items — use data-large for lightbox (1200px)
       return Array.from(document.querySelectorAll('.gallery-grid__item img'))
-        .map(img => img.src);
+        .map(imgEl => imgEl.dataset.large || imgEl.src);
     }
 
     function show(index) {
