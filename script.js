@@ -188,9 +188,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentIndex = 0;
 
     function getVisibleImages() {
-      return Array.from(document.querySelectorAll('.portfolio__item'))
+      // Support both homepage portfolio items and gallery sub-page items
+      const portfolioItems = Array.from(document.querySelectorAll('.portfolio__item'))
         .filter(item => item.style.display !== 'none')
         .map(item => item.querySelector('img').src);
+      if (portfolioItems.length > 0) return portfolioItems;
+
+      // Gallery sub-page items
+      return Array.from(document.querySelectorAll('.gallery-grid__item img'))
+        .map(img => img.src);
     }
 
     function show(index) {
@@ -223,6 +229,13 @@ document.addEventListener('DOMContentLoaded', () => {
           .filter(i => i.style.display !== 'none');
         const index = visibleItems.indexOf(item);
         if (index !== -1) open(index);
+      });
+    });
+
+    // Click gallery grid images to open (portfolio sub-pages)
+    document.querySelectorAll('.gallery-grid__item').forEach((item, idx) => {
+      item.addEventListener('click', () => {
+        open(idx);
       });
     });
 
